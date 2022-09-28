@@ -43,7 +43,9 @@ jobs:
         env:
           GOOS: ${{ matrix.platform }}
           GOARCH: ${{ matrix.arch }}
-        run: go build -o goofys-build goofys
+        run: |
+          cd goofys
+          go build -o ../goofys-build
       - name: Upload Goofys
         uses: actions/upload-artifact@v2
         with:
