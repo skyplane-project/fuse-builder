@@ -33,7 +33,6 @@ jobs:
           cd goofys
           git checkout ${{ env.GOOFYS_VERSION }}
           git checkout master -- go.mod go.sum
-          go mod vendor
       - name: Update gopsutil if running on darwin/arm64
         if: matrix.platform == 'darwin' && matrix.arch == 'arm64'
         run: |
@@ -46,6 +45,7 @@ jobs:
           GOARCH: ${{ matrix.arch }}
         run: |
           cd goofys
+          go mod vendor
           go build -o ../goofys-build
       - name: Upload Goofys
         uses: actions/upload-artifact@v2
