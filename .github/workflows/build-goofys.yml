@@ -35,7 +35,7 @@ jobs:
         if: matrix.platform == 'darwin' && matrix.arch == 'arm64'
         run: |
           cd goofys
-          go mod edit -replace github.com/shirou/gopsutil=github.com/shirou/gopsutil/v3
+          go mod edit -replace github.com/shirou/gopsutil=github.com/shirou/gopsutil@v3
       - name: Build Goofys
         env:
           GOOS: ${{ matrix.platform }}
