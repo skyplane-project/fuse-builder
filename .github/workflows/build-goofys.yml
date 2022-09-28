@@ -37,6 +37,7 @@ jobs:
           cd goofys
           go mod edit -replace github.com/shirou/gopsutil=github.com/shirou/gopsutil@v3
           go mod download github.com/shirou/gopsutil
+          go get github.com/tklauser/go-sysconf
       - name: Build Goofys
         env:
           GOOS: ${{ matrix.platform }}
