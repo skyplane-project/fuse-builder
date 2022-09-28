@@ -33,13 +33,13 @@ jobs:
           cd goofys
           git checkout ${{ env.GOOFYS_VERSION }}
           git checkout master -- go.mod go.sum
+          go mod vendor
       - name: Update gopsutil if running on darwin/arm64
         if: matrix.platform == 'darwin' && matrix.arch == 'arm64'
         run: |
           cd goofys
           go mod edit -replace github.com/shirou/gopsutil=github.com/shirou/gopsutil@v3
           go mod tidy
-          go mod vendor
       - name: Build Goofys
         env:
           GOOS: ${{ matrix.platform }}
