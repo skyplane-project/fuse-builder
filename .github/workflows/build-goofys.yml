@@ -28,11 +28,6 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: 1.19.1
-      - name: Checkout goofys at ${{ env.GOOFYS_VERSION }}
-        run: |
-          cd goofys
-          git checkout ${{ env.GOOFYS_VERSION }}
-          git checkout master -- go.mod go.sum
       - name: Update gopsutil if running on darwin/arm64
         if: matrix.platform == 'darwin' && matrix.arch == 'arm64'
         run: |
@@ -45,7 +40,6 @@ jobs:
           GOARCH: ${{ matrix.arch }}
         run: |
           cd goofys
-          go mod vendor
           go build -o ../goofys-build
       - name: Upload Goofys
         uses: actions/upload-artifact@v2
