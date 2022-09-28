@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [linux, darwin, windows]
+        platform: [linux, darwin]
         arch: [amd64, arm64]
     steps:
       - uses: actions/checkout@v2
