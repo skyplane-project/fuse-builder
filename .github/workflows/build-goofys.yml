@@ -23,7 +23,7 @@ jobs:
       - name: Install gox
         run: go get github.com/mitchellh/gox
       - name: Build Goofys
-        run: gox -osarch="${{ matrix.platform }}/${{ matrix.arch }}" -output="goofys-${{ matrix.platform }}-${{ matrix.arch }}"
+        run: gox -osarch="${{ matrix.platform }}/${{ matrix.arch }}" -output="goofys-${{ matrix.platform }}-${{ matrix.arch }}" github.com/kahing/goofys
       - name: Upload Goofys binary as artifact
         uses: actions/upload-artifact@v2
         with:
