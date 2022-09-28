@@ -1,6 +1,9 @@
 name: build-goofys
 on:
   pull_request:
+  schedule:
+    - cron: '39 22 * * *'
+  workflow_dispatch:
 
 jobs:
   build:
@@ -46,3 +49,21 @@ jobs:
         with:
           name: goofys-${{ env.GOOFYS_VERSION }}-${{ matrix.platform }}-${{ matrix.arch }}
           path: goofys-build
+  push-s3:
+    runs-on: [ubuntu-latest]
+    needs: build
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+        with:
+          path: goofys
+      - name: Upload to S3
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --acl public-read --follow-symlinks
+        env:
+          AWS_S3_BUCKET: skyplane-fuse-builds
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          SOURCE_DIR: goofys
