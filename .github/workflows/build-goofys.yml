@@ -19,11 +19,14 @@ jobs:
         with:
           repository: kahing/goofys
           path: goofys
-      - name: Switch to latest tag and save version to env
+      - name: Fetch latest tag
         run: |
           cd goofys
           echo "GOOFYS_VERSION=$(git describe --tags `git rev-list --tags --max-count=1`)" >> $GITHUB_ENV
-          git checkout $(git describe --tags `git rev-list --tags --max-count=1`)
+      - name: Checkout goofys at ${{ env.GOOFYS_VERSION }}
+        run: |
+          cd goofys
+          git checkout ${{ env.GOOFYS_VERSION }}
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
@@ -44,5 +47,5 @@ jobs:
       - name: Upload Goofys
         uses: actions/upload-artifact@v2
         with:
-          name: goofys-${{ env.TAG }}-${{ matrix.platform }}-${{ matrix.arch }}
+          name: goofys-${{ env.GOOFYS_VERSION }}-${{ matrix.platform }}-${{ matrix.arch }}
           path: goofys
