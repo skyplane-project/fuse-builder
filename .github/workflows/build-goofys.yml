@@ -36,6 +36,7 @@ jobs:
         run: |
           cd goofys
           go mod edit -replace github.com/shirou/gopsutil=github.com/shirou/gopsutil@v3
+          go mod download github.com/shirou/gopsutil
       - name: Build Goofys
         env:
           GOOS: ${{ matrix.platform }}
