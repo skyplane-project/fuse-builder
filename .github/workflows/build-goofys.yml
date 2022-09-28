@@ -19,6 +19,7 @@ jobs:
         with:
           repository: kahing/goofys
           path: goofys
+          fetch-depth: 0
       - name: Fetch latest tag
         run: |
           cd goofys
