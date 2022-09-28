@@ -40,7 +40,7 @@ jobs:
           GOARCH: ${{ matrix.arch }}
         run: |
           cd goofys
-          go build -o ../goofys-build
+          go build -o ../goofys-build -ldflags "-X main.Version=${{ env.GOOFYS_VERSION }}"
       - name: Upload Goofys
         uses: actions/upload-artifact@v2
         with:
