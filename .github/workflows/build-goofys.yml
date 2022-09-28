@@ -47,5 +47,5 @@ jobs:
       - name: Upload Goofys
         uses: actions/upload-artifact@v2
         with:
-          name: goofys
-          path: goofys-${{ env.TAG }}-${{ matrix.platform }}-${{ matrix.arch }}
+          name: goofys-${{ env.TAG }}-${{ matrix.platform }}-${{ matrix.arch }}
+          path: ../goofys
