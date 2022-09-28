@@ -1,8 +1,7 @@
 name: build-goofys
 on:
-  schedule:
-    - cron: '39 22 * * *'
   push:
+  pull_request:
 
 jobs:
   build:
