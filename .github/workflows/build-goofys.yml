@@ -20,21 +20,26 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: 1.19.1
-      # check out goofys
       - name: Checkout goofys
         uses: actions/checkout@v2
         with:
           repository: kahing/goofys
           path: goofys
+      - name: Switch to latest tag and save version to variable
+        run: |
+          cd goofys
+          export TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
+          echo "TAG=$TAG" >> $GITHUB_ENV
       - name: Build Goofys
         env:
           GOOS: ${{ matrix.platform }}
           GOARCH: ${{ matrix.arch }}
         run: |
           cd goofys
-          go build -o ../goofys-${{ matrix.platform }}-${{ matrix.arch }}
+          git checkout $TAG
+          go build -o ../goofys-${TAG}-${{ matrix.platform }}-${{ matrix.arch }}
       - name: Upload Goofys
         uses: actions/upload-artifact@v2
         with:
-          name: goofys-${{ matrix.platform }}-${{ matrix.arch }}
-          path: goofys-${{ matrix.platform }}-${{ matrix.arch }}
+          name: goofys-${TAG}-${{ matrix.platform }}-${{ matrix.arch }}
+          path: goofys-${TAG}-${{ matrix.platform }}-${{ matrix.arch }}
