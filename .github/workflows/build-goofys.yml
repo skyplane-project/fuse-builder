@@ -23,10 +23,6 @@ jobs:
         run: |
           cd goofys
           echo "GOOFYS_VERSION=$(git describe --tags `git rev-list --tags --max-count=1`)" >> $GITHUB_ENV
-      - name: Checkout goofys at ${{ env.GOOFYS_VERSION }}
-        run: |
-          cd goofys
-          git checkout ${{ env.GOOFYS_VERSION }}
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
@@ -37,6 +33,10 @@ jobs:
           cd goofys
           go mod edit -replace github.com/shirou/gopsutil=github.com/shirou/gopsutil@v3
           go mod tidy
+      - name: Checkout goofys at ${{ env.GOOFYS_VERSION }}
+        run: |
+          cd goofys
+          git checkout ${{ env.GOOFYS_VERSION }}
       - name: Build Goofys
         env:
           GOOS: ${{ matrix.platform }}
