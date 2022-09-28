@@ -1,0 +1,32 @@
+name: build-goofys
+on:
+  schedule:
+    - cron: '39 22 * * *'
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [darwin, linux, freebsd, windows]
+        arch: [386, amd64, arm, arm64]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.16
+      - name: Install gox
+        run: go get github.com/mitchellh/gox
+      - name: Build Goofys
+        run: gox -osarch="${{ matrix.platform }}/${{ matrix.arch }}" -output="goofys-${{ matrix.platform }}-${{ matrix.arch }}"
+      - name: Upload Goofys binary as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: goofys-${{ matrix.platform }}-${{ matrix.arch }}
+          path: goofys-${{ matrix.platform }}-${{ matrix.arch }}
