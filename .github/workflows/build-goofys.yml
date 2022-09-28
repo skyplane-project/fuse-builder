@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [darwin, linux, windows]
+        platform: [ubuntu, macos, windows]
         arch: [amd64, arm64]
     runs-on: ${{ matrix.platform }}-latest
     steps:
