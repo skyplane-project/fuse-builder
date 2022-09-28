@@ -30,13 +30,19 @@ jobs:
           cd goofys
           export TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
           echo "TAG=$TAG" >> $GITHUB_ENV
+          git checkout $TAG
+      - name: Update gopsutil if running on darwin/arm64
+        if: matrix.platform == 'darwin' && matrix.arch == 'arm64'
+        run: |
+          cd goofys
+          go mod edit -replace github.com/shirou/gopsutil==github.com/shirou/gopsutil@v3.22.7
       - name: Build Goofys
         env:
           GOOS: ${{ matrix.platform }}
           GOARCH: ${{ matrix.arch }}
         run: |
           cd goofys
-          git checkout $TAG
+          go mod edit -replace 
           go build -o ../goofys
       - name: Upload Goofys
         uses: actions/upload-artifact@v2
