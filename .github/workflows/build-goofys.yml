@@ -1,6 +1,5 @@
 name: build-goofys
 on:
-  push:
   pull_request:
 
 jobs:
@@ -20,12 +19,11 @@ jobs:
         with:
           repository: kahing/goofys
           path: goofys
-      - name: Switch to latest tag and save version to variable
+      - name: Switch to latest tag and save version to env
         run: |
           cd goofys
-          export TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
-          echo "TAG=$TAG" >> $GITHUB_ENV
-          git checkout ${{ env.TAG }}
+          echo "GOOFYS_VERSION=$(git describe --tags `git rev-list --tags --max-count=1`)" >> $GITHUB_ENV
+          git checkout $(git describe --tags `git rev-list --tags --max-count=1`)
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
