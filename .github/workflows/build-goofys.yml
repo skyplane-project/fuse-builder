@@ -37,9 +37,9 @@ jobs:
         run: |
           cd goofys
           git checkout $TAG
-          go build -o ../goofys-${TAG}-${{ matrix.platform }}-${{ matrix.arch }}
+          go build -o ../goofys
       - name: Upload Goofys
         uses: actions/upload-artifact@v2
         with:
-          name: goofys-${TAG}-${{ matrix.platform }}-${{ matrix.arch }}
-          path: goofys-${TAG}-${{ matrix.platform }}-${{ matrix.arch }}
+          name: goofys
+          path: goofys-${{ env.TAG }}-${{ matrix.platform }}-${{ matrix.arch }}
