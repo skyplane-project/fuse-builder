@@ -10,8 +10,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [darwin, linux, freebsd, windows]
-        arch: [386, amd64, arm, arm64]
+        platform: [darwin, linux, windows]
+        arch: [amd64, arm64]
+    runs-on: ${{ matrix.platform }}-latest
     steps:
       - uses: actions/checkout@v2
         with:
@@ -20,11 +21,20 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: 1.16
-      - name: Install gox
-        run: go get github.com/mitchellh/gox
+      # check out goofys
+      - name: Checkout goofys
+        uses: actions/checkout@v2
+        with:
+          repository: kahing/goofys
+          path: goofys
       - name: Build Goofys
-        run: gox -osarch="${{ matrix.platform }}/${{ matrix.arch }}" -output="goofys-${{ matrix.platform }}-${{ matrix.arch }}" github.com/kahing/goofys
-      - name: Upload Goofys binary as artifact
+        env:
+          GOOS: ${{ matrix.platform }}
+          GOARCH: ${{ matrix.arch }}
+        run: |
+          cd goofys
+          go build -o ../goofys-${{ matrix.platform }}-${{ matrix.arch }}
+      - name: Upload Goofys
         uses: actions/upload-artifact@v2
         with:
           name: goofys-${{ matrix.platform }}-${{ matrix.arch }}
